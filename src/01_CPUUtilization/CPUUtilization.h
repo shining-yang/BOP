@@ -77,9 +77,18 @@ void CPUUtilization::_OccupyIn100MS(int ms)
     //         throw new int;
     //     }
 
+#if 0
     long total = m_nCPUAdditionsPerMS * ms;
     for (long n = 0; n < total; n++) {
     }
+#else
+    /*
+     * EASY & FAST way to occupy CPU, no need to MeasureCPU
+     */
+    DWORD dwBegin = ::GetTickCount();
+    while (static_cast<int>(::GetTickCount() - dwBegin) <= ms) {
+    }
+#endif
 
     Sleep(100 - ms);
 }
