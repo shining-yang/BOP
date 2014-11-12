@@ -6,8 +6,10 @@
 int main(int argc, char* argv[])
 {
     CPUUtilization cu;
-    //cu.OccupyAs(100);
+#if 0
+    cu.OccupyAs(50);
+#else
     cu.OccupyAsSineCurve(40);
-
+#endif
     return 0;
 }

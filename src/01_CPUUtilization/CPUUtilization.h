@@ -65,7 +65,7 @@ void CPUUtilization::OccupyAs(int nPercent)
     }
 }
 
-// nDuration: duration in seconds
+// nDuration: duration of a cycle in seconds
 void CPUUtilization::OccupyAsSineCurve(int nDuration)
 {
     int slices = nDuration * 1000 / 100; // 100 ms per slice for sampling
