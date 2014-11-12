@@ -84,6 +84,9 @@
   <ItemGroup>
     <ClCompile Include="01_CPUUtilization.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CPUUtilization.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
