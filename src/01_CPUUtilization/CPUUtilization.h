@@ -8,52 +8,29 @@
 
 class CPUUtilization {
 public:
-    CPUUtilization();
+    CPUUtilization(long nCPUAdditionsPerMS);
     ~CPUUtilization();
 
     void OccupyAs(int nPercent);
     void OccupyAsSineCurve(int nDuration);
-    void Stop() { m_bStop = true; }
+    void Stop();
 
 protected:
-    long _MeasureCpuByAdditionsPerMS() const;
     void _OccupyIn100MS(int nPercent);
 
 private:
-    volatile bool m_bStop;
+    bool m_bStop;
     long m_nCPUAdditionsPerMS;
 };
 
 
-CPUUtilization::CPUUtilization() : m_bStop(false)
+CPUUtilization::CPUUtilization(long nCPUAdditionsPerMS) : m_bStop(false)
 {
-    m_nCPUAdditionsPerMS = _MeasureCpuByAdditionsPerMS();
+    m_nCPUAdditionsPerMS = nCPUAdditionsPerMS;
 }
 
 CPUUtilization::~CPUUtilization()
 {
-}
-
-long CPUUtilization::_MeasureCpuByAdditionsPerMS() const
-{
-    LARGE_INTEGER StartingTime, EndingTime, ElapsedMilliseconds;
-    LARGE_INTEGER Frequency;
-
-    QueryPerformanceFrequency(&Frequency);
-    QueryPerformanceCounter(&StartingTime);
-
-    for (unsigned i = 0; i < static_cast<unsigned>(-1); i++) {
-        // do not allow compilation optimization
-    }
-
-    QueryPerformanceCounter(&EndingTime);
-    ElapsedMilliseconds.QuadPart = EndingTime.QuadPart - StartingTime.QuadPart;
-    ElapsedMilliseconds.QuadPart *= 1000000;
-    ElapsedMilliseconds.QuadPart /= Frequency.QuadPart;
-    ElapsedMilliseconds.QuadPart /= 1000; // microsecond -> millisecond
-
-    double nAdditionPerMillisecond = (double)(static_cast<unsigned>(-1)) / ElapsedMilliseconds.QuadPart;
-    return static_cast<long>(nAdditionPerMillisecond);
 }
 
 void CPUUtilization::OccupyAs(int nPercent)
@@ -84,6 +61,9 @@ void CPUUtilization::OccupyAsSineCurve(int nDuration)
     while (!m_bStop) {
         for (int i = 0; i < slices; i++) {
             _OccupyIn100MS(nSineArray[i]);
+            if (m_bStop) {
+                break;
+            }
         }
     }
 
@@ -104,3 +84,7 @@ void CPUUtilization::_OccupyIn100MS(int ms)
     Sleep(100 - ms);
 }
 
+void CPUUtilization::Stop()
+{
+    m_bStop = true;
+}
