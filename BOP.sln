@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_CPUUtilization", "src\01_CPUUtilization\01_CPUUtilization.vcxproj", "{73EA31F3-14B5-4163-8871-A8B36A908249}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_BeautifulString", "src\02_BeautifulString\02_BeautifulString.vcxproj", "{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{73EA31F3-14B5-4163-8871-A8B36A908249}.Debug|Win32.Build.0 = Debug|Win32
 		{73EA31F3-14B5-4163-8871-A8B36A908249}.Release|Win32.ActiveCfg = Release|Win32
 		{73EA31F3-14B5-4163-8871-A8B36A908249}.Release|Win32.Build.0 = Release|Win32
+		{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}.Debug|Win32.Build.0 = Debug|Win32
+		{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}.Release|Win32.ActiveCfg = Release|Win32
+		{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
