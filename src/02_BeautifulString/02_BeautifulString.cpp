@@ -30,12 +30,12 @@ public:
 
 protected:
     void _Reset();
-    bool _FeedCharToFindBeautifulString(TCHAR ch, int offset);
-    bool _CheckForBeautifulString() const;
+    bool _FeedChar(TCHAR ch, int offset);
+    bool _Check() const;
     void _TrimHead();
 
 public:
-    bool FindBeautifulString(const TCHAR* str, int& offset, int& length);
+    bool Find(const TCHAR* str, int& offset, int& length);
 };
 
 void BeautifulStringParser::_Reset()
@@ -44,12 +44,12 @@ void BeautifulStringParser::_Reset()
     m_nIndicator = -1;
 }
 
-bool BeautifulStringParser::FindBeautifulString(const TCHAR* str, int& offset, int& length)
+bool BeautifulStringParser::Find(const TCHAR* str, int& offset, int& length)
 {
     _Reset();
 
     for (const TCHAR* p = str; *p != NULL; p++) {
-        if (_FeedCharToFindBeautifulString(*p, p - str)) {
+        if (_FeedChar(*p, p - str)) {
             _TrimHead();
             offset = m_arrItems[0].offset;
             length = m_arrItems[0].count * BS_CHAR_NUM;
@@ -60,7 +60,7 @@ bool BeautifulStringParser::FindBeautifulString(const TCHAR* str, int& offset, i
     return false;
 }
 
-bool BeautifulStringParser::_FeedCharToFindBeautifulString(TCHAR ch, int offset)
+bool BeautifulStringParser::_FeedChar(TCHAR ch, int offset)
 {
     if (m_nIndicator == -1)  {
         // 初始化第0个位置
@@ -71,7 +71,7 @@ bool BeautifulStringParser::_FeedCharToFindBeautifulString(TCHAR ch, int offset)
     } else {
         if (m_arrItems[m_nIndicator].data == ch) {
             m_arrItems[m_nIndicator].count++;
-            if (_CheckForBeautifulString()) {
+            if (_Check()) {
                 return true;
             }
             if ((m_nIndicator > 0) && (m_arrItems[m_nIndicator].count > m_arrItems[m_nIndicator - 1].count)) {
@@ -97,7 +97,7 @@ bool BeautifulStringParser::_FeedCharToFindBeautifulString(TCHAR ch, int offset)
                 m_arrItems[2].data = ch;
                 m_arrItems[2].count = 1;
                 m_arrItems[2].offset = offset;
-                if (_CheckForBeautifulString()) {
+                if (_Check()) {
                     return true;
                 }
             }
@@ -113,7 +113,7 @@ bool BeautifulStringParser::_FeedCharToFindBeautifulString(TCHAR ch, int offset)
     return false;
 }
 
-bool BeautifulStringParser::_CheckForBeautifulString() const
+bool BeautifulStringParser::_Check() const
 {
     if (m_nIndicator < BS_CHAR_NUM - 1) { // must feed all
         return false;
@@ -145,7 +145,7 @@ void BeautifulStringParser::_TrimHead()
 bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
 {
     BeautifulStringParser parser;
-    return parser.FindBeautifulString(str, offset, length);
+    return parser.Find(str, offset, length);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
