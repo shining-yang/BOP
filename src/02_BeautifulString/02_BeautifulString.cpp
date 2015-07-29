@@ -143,10 +143,13 @@ bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    TCHAR text[] = _T("aabbbccddefg");
+    TCHAR text[] = _T("aabbbcccdddefg");
+
     int offset = -1;
     int length = -1;
     bool found = FindBeautifulString(text, offset, length);
+    _tprintf(_T("%s\n"), found ? _T("YES") : _T("NO"));
+
     if (found) {
         for (int i = 0; i < length; i++) {
             _tprintf(_T("%c"), text[offset + i]);
