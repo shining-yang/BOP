@@ -1,6 +1,13 @@
 // 02_BeautifulString.cpp : Defines the entry point for the console application.
 //
-
+// DESCRIPTION:
+// We say a string is beautiful if it has the equal amount of 3 or more
+// continuous letters(in increasing order).
+// Here are some example of valid beautiful strings : "abc", "cde", "aabbcc", "aaabbbccc".
+// Here are some example of invalid beautiful strings : "abd", "cba", "aabbc", "zab".
+// Given a string of alphabets containing only lowercase alphabets(a - z),
+// output "YES" if the string contains a be3autiful sub - string, otherwise output "NO".
+//
 #include "stdafx.h"
 #include <Windows.h>
 
