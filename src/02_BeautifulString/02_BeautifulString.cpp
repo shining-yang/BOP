@@ -12,7 +12,13 @@ class BeautifulStringParser {
         TCHAR   data;
         int     offset;
         int     count;
-    } m_bs[BS_NUM];
+    } m_arrItems[BS_NUM];
+
+    int m_nIndicator; // array index for current working BS-char
+
+public:
+    BeautifulStringParser() { _Reset(); }
+    ~BeautifulStringParser() {}
 
 protected:
     void _Reset();
@@ -24,7 +30,8 @@ public:
 
 void BeautifulStringParser::_Reset()
 {
-    ZeroMemory(&m_bs, sizeof(m_bs));
+    ZeroMemory(&m_arrItems, sizeof(m_arrItems));
+    m_nIndicator = -1;
 }
 
 bool BeautifulStringParser::FindBeautifulString(const TCHAR* str, int& offset, int& length)
@@ -33,8 +40,8 @@ bool BeautifulStringParser::FindBeautifulString(const TCHAR* str, int& offset, i
 
     for (const TCHAR* p = str; *p != NULL; p++) {
         if (_FeedCharToFindBeautifulString(*p, p - str)) {
-            offset = m_bs[0].offset;
-            length = m_bs[0].count * BS_NUM;
+            offset = m_arrItems[0].offset;
+            length = m_arrItems[0].count * BS_NUM;
             return true;
         }
     }
