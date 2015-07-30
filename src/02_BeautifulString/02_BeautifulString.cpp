@@ -97,9 +97,9 @@ bool BeautifulStringParser::_FeedChar(TCHAR ch, int offset)
                 m_arrItems[2].data = ch;
                 m_arrItems[2].count = 1;
                 m_arrItems[2].offset = offset;
-                if (_Check()) {
-                    return true;
-                }
+            }
+            if (_Check()) {
+                return true;
             }
         } else {
             // 重新始于第0个位置
@@ -150,7 +150,7 @@ bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    TCHAR text[] = _T("aabcbbcccdddefg");
+    TCHAR text[] = _T("aabbbcccddeefg");
 
     int offset = -1;
     int length = -1;
