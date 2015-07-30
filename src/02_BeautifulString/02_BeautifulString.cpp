@@ -119,7 +119,7 @@ bool BeautifulStringParser::_Check() const
         return false;
     }
 
-#if 1 // Redundant verification
+#if 0 // Redundant verification
     for (int i = 0; i < BS_CHAR_NUM - 1; i++) {
         if (m_arrItems[i + 1].data - m_arrItems[i].data != 1) { // increasing
             return false;
@@ -150,7 +150,7 @@ bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    TCHAR text[] = _T("aabbbcccdddefg");
+    TCHAR text[] = _T("aabcbbcccdddefg");
 
     int offset = -1;
     int length = -1;
