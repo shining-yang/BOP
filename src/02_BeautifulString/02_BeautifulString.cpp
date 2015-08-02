@@ -11,22 +11,22 @@
 #include "stdafx.h"
 #include <Windows.h>
 
-// Max number of different characters to form Beautiful-String
-// MUST greater than 2
+// Max number of different characters to form Beautiful-String. MUST greater than 2
 const int BS_CHAR_NUM = 3;
 
-class BeautifulStringParser {
-    struct BS_ITEM {
-        TCHAR   data;
-        int     offset;
-        int     count;
-    } m_arrItems[BS_CHAR_NUM];
+struct BS_ITEM {
+	TCHAR   data;
+	int     offset;
+	int     count;
+};
 
-    int m_nIndicator; // subscript of array for current working BS-char
+class BeautifulStringParser {
+public:
+	BeautifulStringParser(int num = BS_CHAR_NUM);
+	~BeautifulStringParser();
 
 public:
-    BeautifulStringParser() { _Reset(); }
-    ~BeautifulStringParser() {}
+    bool Find(const TCHAR* str, int& offset, int& length);
 
 protected:
     void _Reset();
@@ -34,13 +34,24 @@ protected:
     bool _Check() const;
     void _TrimHead();
 
-public:
-    bool Find(const TCHAR* str, int& offset, int& length);
+private:
+	BS_ITEM* m_pItems;
+	int m_nCharNum;		// different character numbers we considered as BeautifulString
+    int m_nIndicator;	// subscript of array for current working BS-char
 };
+
+BeautifulStringParser::BeautifulStringParser(int num) : m_nCharNum(num)
+{
+	m_pItems = new BS_ITEM[m_nCharNum];
+}
+
+BeautifulStringParser::~BeautifulStringParser()
+{
+	delete[] m_pItems;
+}
 
 void BeautifulStringParser::_Reset()
 {
-    ZeroMemory(&m_arrItems, sizeof(m_arrItems));
     m_nIndicator = -1;
 }
 
@@ -51,8 +62,8 @@ bool BeautifulStringParser::Find(const TCHAR* str, int& offset, int& length)
     for (const TCHAR* p = str; *p != NULL; p++) {
         if (_FeedChar(*p, p - str)) {
             _TrimHead();
-            offset = m_arrItems[0].offset;
-            length = m_arrItems[0].count * BS_CHAR_NUM;
+            offset = m_pItems[0].offset;
+            length = m_pItems[0].count * BS_CHAR_NUM;
             return true;
         }
     }
@@ -64,48 +75,48 @@ bool BeautifulStringParser::_FeedChar(TCHAR ch, int offset)
 {
     if (m_nIndicator == -1)  {
         // 初始化第0个位置
-        m_arrItems[0].data = ch;
-        m_arrItems[0].count = 1;
-        m_arrItems[0].offset = offset;
+        m_pItems[0].data = ch;
+        m_pItems[0].count = 1;
+        m_pItems[0].offset = offset;
         m_nIndicator = 0;
     } else {
-        if (m_arrItems[m_nIndicator].data == ch) {
-            m_arrItems[m_nIndicator].count++;
+        if (m_pItems[m_nIndicator].data == ch) {
+            m_pItems[m_nIndicator].count++;
             if (_Check()) {
                 return true;
             }
-            if ((m_nIndicator > 0) && (m_arrItems[m_nIndicator].count > m_arrItems[m_nIndicator - 1].count)) {
+            if ((m_nIndicator > 0) && (m_pItems[m_nIndicator].count > m_pItems[m_nIndicator - 1].count)) {
                 // 替换到第0个位置
-                m_arrItems[0].data = m_arrItems[m_nIndicator].data;
-                m_arrItems[0].count = m_arrItems[m_nIndicator].count;
-                m_arrItems[0].offset = m_arrItems[m_nIndicator].offset;
+                m_pItems[0].data = m_pItems[m_nIndicator].data;
+                m_pItems[0].count = m_pItems[m_nIndicator].count;
+                m_pItems[0].offset = m_pItems[m_nIndicator].offset;
                 m_nIndicator = 0;
             }
-        } else if (m_arrItems[m_nIndicator].data + 1 == ch) {
+        } else if (m_pItems[m_nIndicator].data + 1 == ch) {
             if ((m_nIndicator == 0) || (m_nIndicator == 1)) {
                 m_nIndicator++;
-                m_arrItems[m_nIndicator].data = ch;
-                m_arrItems[m_nIndicator].count = 1;
-                m_arrItems[m_nIndicator].offset = offset;
+                m_pItems[m_nIndicator].data = ch;
+                m_pItems[m_nIndicator].count = 1;
+                m_pItems[m_nIndicator].offset = offset;
             } else { // indicator is 2
-                m_arrItems[0].data = m_arrItems[1].data;
-                m_arrItems[0].count = m_arrItems[1].count;
-                m_arrItems[0].offset = m_arrItems[1].offset;
-                m_arrItems[1].data = m_arrItems[2].data;
-                m_arrItems[1].count = m_arrItems[2].count;
-                m_arrItems[1].offset = m_arrItems[2].offset;
-                m_arrItems[2].data = ch;
-                m_arrItems[2].count = 1;
-                m_arrItems[2].offset = offset;
+                m_pItems[0].data = m_pItems[1].data;
+                m_pItems[0].count = m_pItems[1].count;
+                m_pItems[0].offset = m_pItems[1].offset;
+                m_pItems[1].data = m_pItems[2].data;
+                m_pItems[1].count = m_pItems[2].count;
+                m_pItems[1].offset = m_pItems[2].offset;
+                m_pItems[2].data = ch;
+                m_pItems[2].count = 1;
+                m_pItems[2].offset = offset;
             }
             if (_Check()) {
                 return true;
             }
         } else {
             // 重新始于第0个位置
-            m_arrItems[0].data = ch;
-            m_arrItems[0].count = 1;
-            m_arrItems[0].offset = offset;
+            m_pItems[0].data = ch;
+            m_pItems[0].count = 1;
+            m_pItems[0].offset = offset;
             m_nIndicator = 0;
         }
     }
@@ -121,13 +132,13 @@ bool BeautifulStringParser::_Check() const
 
 #if 0 // Redundant verification
     for (int i = 0; i < BS_CHAR_NUM - 1; i++) {
-        if (m_arrItems[i + 1].data - m_arrItems[i].data != 1) { // increasing
+        if (m_pItems[i + 1].data - m_pItems[i].data != 1) { // increasing
             return false;
         }
     }
 #endif
 
-    if (m_arrItems[BS_CHAR_NUM - 1].count == m_arrItems[BS_CHAR_NUM - 2].count) {
+    if (m_pItems[BS_CHAR_NUM - 1].count == m_pItems[BS_CHAR_NUM - 2].count) {
         return true;
     }
 
@@ -137,9 +148,9 @@ bool BeautifulStringParser::_Check() const
 // eg. 'AAAABBCC' --> 'AABBCC'
 void BeautifulStringParser::_TrimHead()
 {
-    int deta = m_arrItems[0].count - m_arrItems[1].count;
-    m_arrItems[0].count -= deta;
-    m_arrItems[0].offset += deta;
+    int deta = m_pItems[0].count - m_pItems[1].count;
+    m_pItems[0].count -= deta;
+    m_pItems[0].offset += deta;
 }
 
 bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
