@@ -21,6 +21,9 @@ struct BS_ITEM {
 };
 
 class BeautifulStringParser {
+	BeautifulStringParser(const BeautifulStringParser& other);
+	BeautifulStringParser& operator=(const BeautifulStringParser& other);
+
 public:
 	BeautifulStringParser(int num = BS_CHAR_NUM);
 	~BeautifulStringParser();
@@ -40,7 +43,7 @@ private:
     int m_nIndicator;	// subscript of array for current working BS-char
 };
 
-BeautifulStringParser::BeautifulStringParser(int num) : m_nCharNum(num)
+BeautifulStringParser::BeautifulStringParser(int num) : m_nCharNum(num), m_nIndicator(-1)
 {
 	m_pItems = new BS_ITEM[m_nCharNum];
 }
