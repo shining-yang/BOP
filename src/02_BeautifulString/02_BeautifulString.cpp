@@ -82,48 +82,49 @@ bool BeautifulStringParser::_FeedChar(TCHAR ch, int offset)
         m_pItems[0].count = 1;
         m_pItems[0].offset = offset;
         m_nIndicator = 0;
-    } else {
-        if (m_pItems[m_nIndicator].data == ch) {
-            m_pItems[m_nIndicator].count++;
-            if (_Check()) {
-                return true;
-            }
-            if ((m_nIndicator > 0) && (m_pItems[m_nIndicator].count > m_pItems[m_nIndicator - 1].count)) {
-                // 替换到第0个位置
-                m_pItems[0].data = m_pItems[m_nIndicator].data;
-                m_pItems[0].count = m_pItems[m_nIndicator].count;
-                m_pItems[0].offset = m_pItems[m_nIndicator].offset;
-                m_nIndicator = 0;
-            }
-        } else if (m_pItems[m_nIndicator].data + 1 == ch) {
-			if ((m_nIndicator == 0) || m_pItems[m_nIndicator].count == m_pItems[m_nIndicator - 1].count) {
-                m_nIndicator++;
-                m_pItems[m_nIndicator].data = ch;
-                m_pItems[m_nIndicator].count = 1;
-                m_pItems[m_nIndicator].offset = offset;
-            } else {
-				// shift items
-                m_pItems[0].data	= m_pItems[m_nIndicator - 1].data;
-                m_pItems[0].count	= m_pItems[m_nIndicator - 1].count;
-                m_pItems[0].offset	= m_pItems[m_nIndicator - 1].offset;
-                m_pItems[1].data	= m_pItems[m_nIndicator].data;
-                m_pItems[1].count	= m_pItems[m_nIndicator].count;
-                m_pItems[1].offset	= m_pItems[m_nIndicator].offset;
-                m_pItems[2].data	= ch;
-                m_pItems[2].count	= 1;
-                m_pItems[2].offset	= offset;
-				m_nIndicator = 2;
-            }
-            if (_Check()) {
-                return true;
-            }
-        } else {
-            // 重新始于第0个位置
-            m_pItems[0].data = ch;
-            m_pItems[0].count = 1;
-            m_pItems[0].offset = offset;
+        return false;
+    }
+
+    if (m_pItems[m_nIndicator].data == ch) {
+        m_pItems[m_nIndicator].count++;
+        if (_Check()) {
+            return true;
+        }
+        if ((m_nIndicator > 0) && (m_pItems[m_nIndicator].count > m_pItems[m_nIndicator - 1].count)) {
+            // 替换到第0个位置
+            m_pItems[0].data = m_pItems[m_nIndicator].data;
+            m_pItems[0].count = m_pItems[m_nIndicator].count;
+            m_pItems[0].offset = m_pItems[m_nIndicator].offset;
             m_nIndicator = 0;
         }
+    } else if (m_pItems[m_nIndicator].data + 1 == ch) {
+        if ((m_nIndicator == 0) || m_pItems[m_nIndicator].count == m_pItems[m_nIndicator - 1].count) {
+            m_nIndicator++;
+            m_pItems[m_nIndicator].data = ch;
+            m_pItems[m_nIndicator].count = 1;
+            m_pItems[m_nIndicator].offset = offset;
+        } else {
+            // shift items
+            m_pItems[0].data = m_pItems[m_nIndicator - 1].data;
+            m_pItems[0].count = m_pItems[m_nIndicator - 1].count;
+            m_pItems[0].offset = m_pItems[m_nIndicator - 1].offset;
+            m_pItems[1].data = m_pItems[m_nIndicator].data;
+            m_pItems[1].count = m_pItems[m_nIndicator].count;
+            m_pItems[1].offset = m_pItems[m_nIndicator].offset;
+            m_pItems[2].data = ch;
+            m_pItems[2].count = 1;
+            m_pItems[2].offset = offset;
+            m_nIndicator = 2;
+        }
+        if (_Check()) {
+            return true;
+        }
+    } else {
+        // 重新始于第0个位置
+        m_pItems[0].data = ch;
+        m_pItems[0].count = 1;
+        m_pItems[0].offset = offset;
+        m_nIndicator = 0;
     }
 
     return false;
@@ -158,18 +159,17 @@ bool FindBeautifulString(const TCHAR* str, int& offset, int& length)
 
 void OutputResult(const TCHAR* text, bool found, int offset, int length)
 {
-	if (found) {
-		_tprintf(_T("YES\n"));
-		for (int i = 0; i < length; i++) {
-			_tprintf(_T("%c"), text[offset + i]);
-		}
-	} else {
-		_tprintf(_T("NO\n"));
-		_tprintf(_T("-"));
-	}
-	
-	_tprintf(_T("\n"));
+    _tprintf(_T("%s: "), found ? _T("YES") : _T("NO"));
+
+    if (found) {
+        for (int i = 0; i < length; i++) {
+            _tprintf(_T("%c"), text[offset + i]);
+        }
+    }
+
+    _tprintf(_T("\n"));
 }
+
 
 int _tmain(int argc, _TCHAR* argv[])
 {
