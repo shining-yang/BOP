@@ -7,14 +7,14 @@
  */
 int find_except(int a[], int n)
 {
-	int one = 0;
-	int acc = 0;
+	int one = 0, acc = 0;
+	int i, t;
 
-	for (int i = 0; i < n; i++) {
+	for (i = 0; i < n; i++) {
 		acc |= a[i] & one;
 		one ^= a[i];
 
-		int t = one & acc;
+		t = one & acc;
 		one &= ~t;
 		acc &= ~t;
 	}
