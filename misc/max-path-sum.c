@@ -39,9 +39,7 @@ void free_bi_node(struct bi_node_t* node)
 	}
 }
 
-double g_max_path_sum = INT_MIN;
-
-int find_max_path_sum(struct bi_node_t* tree)
+int find_max_path_sum(struct bi_node_t* tree, int* sum)
 {
 	int s, l, r; // self, left, right
 
@@ -50,15 +48,14 @@ int find_max_path_sum(struct bi_node_t* tree)
 	}
 
 	s = tree->data;
-	l = find_max_path_sum(tree->left);
-	r = find_max_path_sum(tree->right);
+	l = find_max_path_sum(tree->left, sum);
+	r = find_max_path_sum(tree->right, sum);
 
 	// choose at most ONE path
 	int max_path = max(s, max(l, r) + s);
-
 	int max_path_top = max(max_path, s + l + r);
-	g_max_path_sum = max(g_max_path_sum, max_path_top);
 
+	*sum = max(*sum, max_path_top);
 	return max_path;
 }
 
@@ -74,8 +71,9 @@ void main()
 	t->right->right->left = alloc_bi_node(3);
 	t->right->right->right = alloc_bi_node(4);
 
-	find_max_path_sum(t);
-	printf("MAX PATH SUM is: %f\n", g_max_path_sum);
+	int max_sum = INT_MIN;
+	find_max_path_sum(t, &max_sum);
+	printf("MAX PATH SUM is: %d\n", max_sum);
 
 	free_bi_node(t);
 }
