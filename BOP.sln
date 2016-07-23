@@ -1,11 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_CPUUtilization", "src\01_CPUUtilization\01_CPUUtilization.vcxproj", "{73EA31F3-14B5-4163-8871-A8B36A908249}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_BeautifulString", "src\02_BeautifulString\02_BeautifulString.vcxproj", "{7C32D6A4-C5FD-4BD9-9984-ABE1BCB47FCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_CircularLinkedListClone", "03_CircularLinkedListClone", "{D60BF296-87B6-4147-AA40-EBBC06558A2F}"
+	ProjectSection(SolutionItems) = preProject
+		src\03_CircularLinkedListClone\CircularLinkedList.h = src\03_CircularLinkedListClone\CircularLinkedList.h
+		src\03_CircularLinkedListClone\main.cpp = src\03_CircularLinkedListClone\main.cpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{F23B9857-49F5-4478-8DA1-08E68E5C2C8D}"
+	ProjectSection(SolutionItems) = preProject
+		misc\anagram.c = misc\anagram.c
+		misc\diff-array-element.c = misc\diff-array-element.c
+		misc\equi_index.c = misc\equi_index.c
+		misc\initializer.cxx = misc\initializer.cxx
+		misc\lambda01.cpp = misc\lambda01.cpp
+		misc\max-diff-array-parts.c = misc\max-diff-array-parts.c
+		misc\max-path-sum.c = misc\max-path-sum.c
+		misc\memory-model.cpp = misc\memory-model.cpp
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
