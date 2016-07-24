@@ -2,13 +2,20 @@
 // Variadic template
 #include <iostream>
 
+#if 0
 void Print() {
-  std::cout << "Finished printing." << std::endl;
+  std::cout << "Called Print()" << std::endl;
 }
+#else
+template <typename T>
+void Print(const T& arg) {
+  std::cout << arg << std::endl;
+}
+#endif
 
 template <typename T, typename... Types>
 void Print(const T& first, const Types&... args) {
-  std::cout << first << std::endl;
+  std::cout << first << " [ " << sizeof...(Types) << " ]" << std::endl;
   Print(args...);
 }
 
