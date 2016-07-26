@@ -1,33 +1,36 @@
 
 RM = rm -rf
 
-BUILD_DIR = ./build
+BUILD_DIR = build
 
 CXX_FLAGS += -std=c++11
 
-PROGRAMS += \
-			numeric-limits \
-			variadic-template \
-			template-constructor \
-			lambda-vs-functor
+SOURCES = $(wildcard *.cpp)
+
+PROGRAMS = $(addprefix $(BUILD_DIR)/, $(basename $(SOURCES)))
 
 .PHONY: all
 all: make_build_dir $(PROGRAMS)
 
+.PHONY: make_build_dir
 make_build_dir:
 	@mkdir -p $(BUILD_DIR)
 
-numeric-limits: numeric-limits.cpp
-	$(CXX) -o $(BUILD_DIR)/$@ $< $(CXX_FLAGS)
+$(BUILD_DIR)/numeric-limits: numeric-limits.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
 
-variadic-template: variadic-template.cpp
-	$(CXX) -o $(BUILD_DIR)/$@ $< $(CXX_FLAGS)
+$(BUILD_DIR)/variadic-template: variadic-template.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
 
-template-constructor: template-constructor.cpp
-	$(CXX) -o $(BUILD_DIR)/$@ $< $(CXX_FLAGS)
+$(BUILD_DIR)/template-constructor: template-constructor.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
 
-lambda-vs-functor: lambda-vs-functor.cpp
-	$(CXX) -o $(BUILD_DIR)/$@ $< $(CXX_FLAGS)
+$(BUILD_DIR)/lambda-vs-functor: lambda-vs-functor.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
 
+$(BUILD_DIR)/utility-pair: utility-pair.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
+
+.PHONY: clean
 clean:
 	$(RM) $(BUILD_DIR)
