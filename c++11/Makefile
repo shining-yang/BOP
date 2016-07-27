@@ -31,6 +31,9 @@ $(BUILD_DIR)/lambda-vs-functor: lambda-vs-functor.cpp
 $(BUILD_DIR)/utility-pair: utility-pair.cpp
 	$(CXX) -o $@ $< $(CXX_FLAGS)
 
+$(BUILD_DIR)/utility-tuple: utility-tuple.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
+
 .PHONY: clean
 clean:
 	$(RM) $(BUILD_DIR)
