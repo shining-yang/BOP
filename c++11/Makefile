@@ -1,12 +1,9 @@
+# Makefile to build C++ programs which demostrate new features in C++11
 
 RM = rm -rf
-
 BUILD_DIR = build
-
 CXX_FLAGS += -std=c++11
-
 SOURCES = $(wildcard *.cpp)
-
 PROGRAMS = $(addprefix $(BUILD_DIR)/, $(basename $(SOURCES)))
 
 .PHONY: all
