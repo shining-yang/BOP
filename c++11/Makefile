@@ -34,6 +34,9 @@ $(BUILD_DIR)/utility-tuple: utility-tuple.cpp
 $(BUILD_DIR)/variable-sized-object: variable-sized-object.cpp
 	$(CXX) -o $@ $< $(CXX_FLAGS)
 
+$(BUILD_DIR)/smart-ptr: smart-ptr.cpp
+	$(CXX) -o $@ $< $(CXX_FLAGS)
+
 .PHONY: clean
 clean:
 	$(RM) $(BUILD_DIR)

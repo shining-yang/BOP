@@ -1,5 +1,5 @@
 // @file variable-sized-object.cpp
-//
+// Initialization of variable sized array in C++11. (ubuntu 16.04, g++ 5.4)
 #include <iostream>
 #include <vector>
 #include <string>
@@ -13,7 +13,6 @@ int TaskMain(int argc, char* argv[]) {
 }
 
 void TestVaribleSizedObject(const std::vector<std::string>& vec_strings) {
-  // initialization of variable sized array in C++11 (ubuntu 16.04, g++ 5.4)
   const char* args[vec_strings.size()] = {};
   int n;
   for (n = 0; n < vec_strings.size(); n++) {
