@@ -8,7 +8,7 @@
 #define SUCCEEDED(rc) (rc == 0)
 
 int RunCaseConstruct() {
-  //std::shared_ptr<std::string> sp = new std::string("Hello"); // ERROR, implicit conversion
+  // std::shared_ptr<std::string> sp = new std::string("Hello"); // ERROR, implicit conversion not allowed
   std::shared_ptr<std::string> sp1(new std::string("Hello"));
   std::shared_ptr<std::string> sp2 {sp1};
   std::shared_ptr<std::string> sp3 = std::make_shared<std::string>("C++11");
@@ -31,14 +31,14 @@ int RunCaseDeleter() {
   // own deleter. You can do that by passing a function, function object,
   // or lambda, which calls delete[] for the passed ordinary pointer.
   std::shared_ptr<int> sp2 { new int[5] { 1, 3, 5, 7, 9 },
-    [](int* p) {
-      delete[] p;
+    [](int* ptr) {
+      delete[] ptr;
     }
   };
 
   //----------------------------------------------------------------------------
   std::unique_ptr<int[]> up(new int[10]); // OK
-  //std::shared_ptr<int[]> sp(new int[10]); // ERROR: does not compile
+  // std::shared_ptr<int[]> sp(new int[10]); // ERROR: does not compile
 
   //----------------------------------------------------------------------------
   // For unique_ptrs, you have to specify a second template argument to
@@ -48,6 +48,23 @@ int RunCaseDeleter() {
       delete ptr;
     }
   };
+
+  return 0;
+}
+
+int RunCaseSpWpConversion() {
+  try {
+    std::shared_ptr<int> sp(new int(15)); // construct sp
+    std::weak_ptr<int> wp = sp; // create wp
+    sp.reset(); // release object of sp
+
+    std::cout << "use_count(): " << wp.use_count() << std::endl; // 0
+    std::cout << "expired: " << std::boolalpha << wp.expired() << std::endl; // false
+
+    std::shared_ptr<int> ptr(wp); // throws bad_weak_ptr
+  } catch (const std::exception& e) {
+    std::cout << "Exception: " << e.what() << std::endl;
+  }
 
   return 0;
 }
@@ -62,5 +79,6 @@ int PrintRunningResult(int result, const std::string& running_case) {
 int main() {
   PrintRunningResult(RunCaseConstruct(), "RunCaseConstruct");
   PrintRunningResult(RunCaseDeleter(), "RunCaseDeleter");
+  PrintRunningResult(RunCaseSpWpConversion(), "RunCaseSpWpConversion");
   return 0;
 }
